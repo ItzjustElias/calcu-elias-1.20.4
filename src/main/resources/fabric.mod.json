@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "calcu",
+	"version": "${version}",
+	"name": "Calcu",
+	"description": "Dont worry about calculating everything yourself anymore!",
+	"authors": [
+		"Elias"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/calcu/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"elias.calcu.Calcu"
+		],
+		"client": [
+			"elias.calcu.CalcuClient"
+		],
+		"fabric-datagen": [
+			"elias.calcu.CalcuDataGenerator"
+		]
+	},
+	"mixins": [
+		"calcu.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.7",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
