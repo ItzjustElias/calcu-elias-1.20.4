@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "calcu",
 	"version": "${version}",
-	"name": "Calcu",
+	"name": "Chat Calcus",
 	"description": "Dont worry about calculating everything yourself anymore!",
 	"authors": [
 		"Elias"

@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.objecthunter.exp4j.Expression;
@@ -45,7 +44,7 @@ public class CalcuClient implements ClientModInitializer {
             dispatcher.register(ClientCommandManager.literal("calculate")
                     .then(ClientCommandManager.literal("help")
                             .executes(context -> {
-                                showHelp(context.getSource());
+                                showHelpMenu(context.getSource());
                                 return 1;
                             })
                     ));
@@ -58,6 +57,19 @@ public class CalcuClient implements ClientModInitializer {
                                 return 1;
                             })
                     ));
+
+            // Register event handlers for functions and operators
+            dispatcher.register(ClientCommandManager.literal("calc_functions")
+                    .executes(context -> {
+                        showFunctionsMenu(context.getSource());
+                        return 1;
+                    }));
+
+            dispatcher.register(ClientCommandManager.literal("calc_operators")
+                    .executes(context -> {
+                        showOperatorsMenu(context.getSource());
+                        return 1;
+                    }));
         });
     }
 
@@ -95,33 +107,65 @@ public class CalcuClient implements ClientModInitializer {
         return expression;
     }
 
-    private void showHelp(FabricClientCommandSource source) {
-        // Send help message with available expressions
-        source.sendFeedback(Text.literal("Calcu Help Menu v0.0.1:").formatted(Formatting.GOLD));
-        source.sendFeedback(Text.literal("---------------------------------------").formatted(Formatting.GRAY));
-        source.sendFeedback(Text.literal("  - Addition: ").formatted(Formatting.GRAY).append(Text.literal("+").formatted(Formatting.YELLOW)));
-        source.sendFeedback(Text.literal("  - Subtraction: ").formatted(Formatting.GRAY).append(Text.literal("-").formatted(Formatting.YELLOW)));
-        source.sendFeedback(Text.literal("  - Multiplication: ").formatted(Formatting.GRAY).append(Text.literal("*").formatted(Formatting.YELLOW)));
-        source.sendFeedback(Text.literal("  - Division: ").formatted(Formatting.GRAY).append(Text.literal("/").formatted(Formatting.YELLOW)));
-        source.sendFeedback(Text.literal("  - Exponentiation: ").formatted(Formatting.GRAY).append(Text.literal("^").formatted(Formatting.YELLOW)));
-        source.sendFeedback(Text.literal("  - Modulus: ").formatted(Formatting.GRAY).append(Text.literal("%").formatted(Formatting.YELLOW)));
-        source.sendFeedback(Text.literal("  - Parentheses: ").formatted(Formatting.GRAY).append(Text.literal("()").formatted(Formatting.YELLOW)));
-        source.sendFeedback(Text.literal("---------------------------------------").formatted(Formatting.GRAY));
-    }
-
     private void showHelpMenu(FabricClientCommandSource source) {
         // Send help menu with clickable words
-        Text helpMenu = Text.literal(
-                Text.builder("Calcu Help Menu v0.0.1:").formatted(Formatting.GOLD)
-                        .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY))
-                        .append(Text.of("\n"))
-                        .append(Text.literal("FUNCTIONS").formatted(Formatting.BLUE)
-                                .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/calc functions"))))
-                        .append(Text.of(" | "))
-                        .append(Text.literal("OPERATORS").formatted(Formatting.BLUE)
-                                .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/calc operators"))))
-                        .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY))
-                        .build()
-        );
+        Text helpMenu = Text.literal("Calcu Help Menu v0.0.1:").formatted(Formatting.GOLD)
+                .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY))
+                .append(Text.literal("\n"))
+                .append(Text.literal("FUNCTIONS").formatted(Formatting.BLUE)
+                        .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/calc_functions"))))
+                .append(Text.literal(" | "))
+                .append(Text.literal("OPERATORS").formatted(Formatting.BLUE)
+                        .styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/calc_operators"))))
+                .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY));
         source.sendFeedback(helpMenu);
     }
+
+    private void showFunctionsMenu(FabricClientCommandSource source) {
+        // Send functions menu
+        Text functionsMenu = Text.literal("Available Functions:").formatted(Formatting.GOLD)
+                .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "st : ").append("A Minecraft stack").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "sqrt : ").append("square root").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "abs : ").append("absolute value").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "sin : ").append("sin").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "cos : ").append("cosine").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "tan : ").append("tangent").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "log/log10/log2 : ").append("logarithm").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "ceil : ").append("nearest upper integer").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "floor : ").append("nearest lower integer").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY));
+        source.sendFeedback(functionsMenu);
+    }
+
+    private void showOperatorsMenu(FabricClientCommandSource source) {
+        // Send operators menu
+        Text operatorsMenu = Text.literal("Available Operators:").formatted(Formatting.GOLD)
+                .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "+ : ").append("Addition").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "- : ").append("Subtraction").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "* : ").append("Multiplication").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "/ : ").append("Division").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "^ : ").append("Exponentiation").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "% : ").append("Modulus").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n"))
+                .append(Text.literal(Formatting.GREEN + "() : ").append("Parentheses").formatted(Formatting.YELLOW))
+                .append(Text.literal("\n---------------------------------------").formatted(Formatting.GRAY));
+        source.sendFeedback(operatorsMenu);
+    }
+}
