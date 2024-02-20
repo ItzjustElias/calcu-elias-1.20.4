@@ -1,5 +1,7 @@
 **Calculator Mod**
 
+![Ontwerp zonder titel (11)](https://github.com/ItzjustElias/calcu-elias-1.20.4/assets/80644230/668c9720-5163-4022-bcc8-b5df595d8e64)
+
 **Description:**
 - The Calculator Mod adds a calculator functionality to the in-game chat, allowing players to perform mathematical calculations quickly and conveniently without leaving the game.
 
